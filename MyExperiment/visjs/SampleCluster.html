@@ -1,0 +1,135 @@
+<html>
+<head>
+  <title>MyExpt |VisJs Representation</title>
+
+  <script type="text/javascript" src="./lib/vis.js"></script>
+  <link href="./lib/vis.css" rel="stylesheet" type="text/css" />
+  
+  <script type="text/javascript">
+	  
+	var network = null;
+	var data = null;
+	function destroy() {
+		if (network !== null) {
+			network.destroy();
+			network = null;
+		}
+	}
+
+	
+
+	var data = {
+		dot: 'dinetwork { h1 -- r1 ; h2 -- r1 ;   h5 -- r2 ; h6 -- r2 ;  r1 -- r2 ;}'
+	};
+
+
+
+
+
+
+
+	function clusteringNetwork() {
+		
+		destroy();
+	  //alert("clusteringNetwork! I am an alert box!!");
+	  var clusteringOn = true;
+      var container = document.getElementById('mynetwork');
+      // IF you want to have a separate function for clustering then "data" has to be be global, Now data is local to draw()
+      var options = {
+        physics: {barnesHut:{springLength:100}}, // this is the correct way to set the length of the springs
+        clustering: {
+          enabled: clusteringOn,
+					initialMaxNodes: 5,
+      clusterThreshold:500,
+      reduceToNodes:300,
+      chainThreshold: 0.4,
+      clusterEdgeThreshold: 20,
+      sectorThreshold: 100,
+      screenSizeThreshold: 0.2,
+      fontSizeMultiplier:  4.0,
+      maxFontSize: 1000,
+      forceAmplification:  0.1,
+      distanceAmplification: 0.1,
+      edgeGrowth: 20,
+      nodeScaling: {width:  1,
+                    height: 1,
+                    radius: 1},
+      maxNodeSizeIncrements: 600,
+      activeAreaBoxSize: 100,
+      clusterLevelDifference: 2
+          
+        },
+        stabilize: false
+      };
+      
+      network = new vis.Network(container, data, options);
+
+      
+	}
+
+
+
+
+
+</script>
+  
+  
+</head>
+
+
+<body onload="clusteringNetwork();">
+	
+<center>
+	
+<TABLE border=1 width=1024 cellpadding=10>
+	<TR>
+		<TD  colspan=2><center>MyExpt</center>
+			<table border=1 width=900 cellpadding=10>
+			  <tr>
+				<td>
+  				   <input type="button" onclick="clusteringNetwork();" value="Redraw" id="btnZoom">
+				</td>
+				<td>
+asdfgh
+				</td>
+				<td>
+asdf
+				</td>
+			  </tr>
+			  <tr>
+				<td>
+				  Physics
+				</td>
+				<td>
+				  <p>Option 5</p>
+				</td>
+				<td>
+asdfgh				</td>
+			  </tr>
+			</table>	
+	
+		</TD> 
+	</tr>
+
+	
+	</TR>
+	<TR>	
+		<TD width="70%" height=1024><div id="mynetwork"></div></TD>
+		<TD width="30%">List of attributes
+			<p id="selection"></p>
+		</TD>
+	</TR>
+	<TR>
+		<TD colspan=2 width="100%">Additional Information</TD>
+	</TR>
+	</TR>
+
+</TABLE>
+A<br>
+
+B<br>
+
+
+This text will be center-aligned.</center>
+</body>
+</html>

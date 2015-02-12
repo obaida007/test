@@ -1,0 +1,212 @@
+<!doctype html>
+<html>
+<head>
+  <title>MyExpt | VisJs Dot</title>
+
+  <script type="text/javascript" src="./lib/vis.js"></script>
+  <link href="./lib/vis.css" rel="stylesheet" type="text/css" />
+
+  <style type="text/css">
+    body, html {
+      font: 10pt sans;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      color: #4d4d4d;
+    }
+
+    #frame {
+      width: 100%;
+      height: 99%;
+    }
+    #frame td {
+      padding: 10px;
+      height: 100%;
+    }
+    #error {
+      color: red;
+    }
+
+    #data {
+      width: 100%;
+      height: 100%;
+      border: 1px solid #d3d3d3;
+    }
+
+    #mynetwork {
+      float: left;
+      width: 100%;
+      height: 100%;
+      border: 1px solid #d3d3d3;
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    textarea.example {
+      display: none;
+      visibility:hidden;
+    }
+
+    
+  </style>
+  
+  
+  <script type="text/javascript">
+
+  
+  
+  
+    function zoomExtentAnimated() {
+        var offsetx = parseInt("0");
+        var offsety = parseInt("0");
+        var duration = parseInt("500");
+        var easingFunction = "linear";
+
+        var options = {offset: {x:offsetx,y:offsety},
+            duration: duration,
+            easingFunction: easingFunction
+        }
+//        statusUpdateSpan.innerHTML = "Doing ZoomExtent() Animation.";
+//        finishMessage = "Animation finished."
+        network.zoomExtent(options);
+    }
+
+
+
+
+
+  </script>
+  
+</head>
+
+
+
+
+
+<body onload="drawExample('ExportedModel')">
+
+<table id="frame">
+  <col width="50%">
+  <col width="50%">
+  <tr>
+    <td colspan="2" style="height: 50px;">
+      <h1>MyExpt Model Visualization</h1>
+      <div>
+        <a href="javascript: drawExample('ExportedModel')">Model View</a>
+        <input type="button" onclick="zoomExtentAnimated();" value=" Zoom Extent " style= id="btnZoom"> <br/>
+      </div>
+      <div>
+        <br>
+        <button id="draw">Draw</button>
+        <span id="error"></span>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <textarea id="data"></textarea>
+    </td>
+    <td>
+      <div id="mynetwork"></div>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  var network = null;
+  var data = null;
+
+  var btnDraw = document.getElementById('draw');
+  var txtData = document.getElementById('data');
+  var txtError = document.getElementById('error');
+  btnDraw.onclick = draw;
+
+  // resize the network when window resizes
+  window.onresize = function () {
+    network.redraw()
+  };
+
+  function destroy() {
+    if (network !== null) {
+      network.destroy();
+      network = null;
+    }
+  }
+
+  // parse and draw the data
+  function draw () {
+    destroy();
+    try {
+      txtError.innerHTML = '';
+
+      // Provide a string with data in DOT language
+      data = {
+        dot: txtData.value
+      };
+
+      // create a network
+      var container = document.getElementById('mynetwork');
+      var options = {};
+      network = new vis.Network(container, data, options);
+    }
+    catch (err) {
+      // set the cursor at the position where the error occurred
+      var match = /\(char (.*)\)/.exec(err);
+      if (match) {
+        var pos = Number(match[1]);
+        if(txtData.setSelectionRange) {
+          txtData.focus();
+          txtData.setSelectionRange(pos, pos);
+        }
+      }
+
+      // show an error message
+      txtError.innerHTML =  err.toString();
+    }
+  }
+
+  /**
+   * Draw an example
+   * @param {String} id HTML id of the textarea containing the example code
+   */
+  function drawExample(id) {
+    txtData.value = document.getElementById(id).value;
+    draw();
+  }
+</script>
+
+<textarea id="ExportedModel" class="example">
+  digraph G  {
+  // note: not all attributes are recognized and supported by Network
+  //       unrecognized attributes are ignored
+
+  node[width=0.6,height=0.5,fontsize=12]
+  node [shape=filled fillcolor=#F1AAF0]
+  node [shape=square]
+  h1 ;   h2 ;   h3 ;   h4 ;   h5 ;   h6 ;   h7 ;  h8 ;  h9; h10;
+
+  node[width=.25,height=.375,fontsize=15]
+  node [shape=filled fillcolor=#F1BBF0]
+  node [shape=circle]
+  h1 -- r1 ;
+  h2 -- r1 ;
+  h3 -- r1 ;
+  h4 -- r1 ;
+  h5 -- r2 ;
+  h6 -- r2 ;
+  h7 -- r2 ;
+  h8 -- r2 ;
+  h9 -- r3 ;
+  h10 -- r3 ;
+  r1 -- r2 ;
+  r2 -- r3 ;
+  r3 -- r4 ;
+  }
+</textarea>
+
+
+    
+</body>
+</html>

@@ -1,0 +1,22 @@
+<html>
+<head>
+  <title>Network | DOT Language</title>
+
+  <script type="text/javascript" src="./lib/vis.js"></script>
+  <link href="./lib/vis.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="mynetwork"></div>
+
+<script type="text/javascript">
+  var container = document.getElementById('mynetwork');
+  var data = {
+    //dot: 'dinetwork {node[shape=circle]; 1 -> 1 -> 2; 2 -> 3; 2 -- 4; 2 -> 1 }'
+    dot: 'dinetwork {node[shape=circle]; 1 -- 2; 2 -- 3; 2 -- 4; 2 -- 1 }';
+         'dinetwork2 {node[shape=square]; 7 -- 8; 8 -- 9; 7 -- 9; 9 -- 8 }'
+  };
+  
+  var network = new vis.Network(container, data);
+</script>
+</body>
+</html>

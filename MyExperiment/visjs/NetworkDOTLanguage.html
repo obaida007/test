@@ -1,0 +1,102 @@
+<html>
+<head>
+  <title>Network | DOT Language</title>
+
+  <script type="text/javascript" src="./lib/vis.js"></script>
+  <link href="./lib/vis.css" rel="stylesheet" type="text/css" />
+  
+  <script type="text/javascript">
+	  
+	var network = null;
+	function destroy() {
+		if (network !== null) {
+			network.destroy();
+			network = null;
+		}
+	}
+
+	function draw() {
+      destroy();
+	  var container = document.getElementById('mynetwork');
+	  var data = {
+		dot: 'dinetwork {  node [shape=filled fillcolor=#F1AAF0]; node [shape=square]; h1; h2; h3; h4; h5; h6; h7; h8; h9; h10; node [shape=circle]; h1 -- r1 ; h2 -- r1 ;   h3 -- r1 ;   h4 -- r1 ; h5 -- r2 ; h6 -- r2 ; h7 -- r2 ; h8 -- r2 ; h9 -- r3 ; h10 -- r3 ; r1 -- r2 ; r2 -- r3 ; r3 -- r4 ; }'
+		//dot: 'dinetwork {node[shape=circle]; 1 -- 2; 2 -- 3; 2 -- 4; 2 -- 1 }'
+	  };//dot: 'dinetwork {node[shape=circle]; 1 -> 1 -> 2; 2 -> 3; 2 -- 4; 2 -> 1 }'
+	  network = new vis.Network(container, data);
+	}
+
+
+    function zoomExtentAnimated() {
+		//alert("Hello! I am an alert box!!");
+        var offsetx = parseInt("0");
+        var offsety = parseInt("0");
+        var duration = parseInt("500");
+        var easingFunction = "linear";
+
+        var options = {offset: {x:offsetx,y:offsety},
+            duration: duration,
+            easingFunction: easingFunction
+        }
+//        statusUpdateSpan.innerHTML = "Doing ZoomExtent() Animation.";
+//        finishMessage = "Animation finished."
+        network.zoomExtent(options);
+    }
+
+
+
+
+</script>
+  
+  
+</head>
+
+
+<body onload="draw();">
+<TABLE border=1 width=1024 cellpadding=10>
+	<TR>
+		<TD  colspan=2>MyExpt
+			<table border=1 width=900 cellpadding=10>
+			  <tr>
+				<td>
+  				   <input type="button" onclick="draw();" value="Redraw" id="btnZoom">
+				</td>
+				<td>
+				   <input type="button" onclick="zoomExtentAnimated();" value="Animated ZoomExtent" id="btnZoom">
+				</td>
+				<td>
+				  <p>Clustering</p>
+				</td>
+			  </tr>
+			  <tr>
+				<td>
+				  Physics
+				</td>
+				<td>
+				  <p>Option 5</p>
+				</td>
+				<td>
+				  Option 6
+				</td>
+			  </tr>
+			</table>	
+	
+		</TD> 
+	</tr>
+
+	
+	</TR>
+	<TR>	
+		<TD width="70%" height=1024><div id="mynetwork"></div></TD>
+		<TD width="30%">List of attributes</TD>
+	</TR>
+	<TR>
+		<TD colspan=2 width="100%">Additional Information</TD>
+	</TR>
+	</TR>
+
+</TABLE>
+
+
+
+</body>
+</html>
