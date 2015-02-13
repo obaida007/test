@@ -1,0 +1,321 @@
+Tips 1: In order to upgrade to the 3.5 kernel on 12.04.2, you will need to run the following command(s):
+
+quantal(3.5)/trusty(3.13)
+For the new kernel:
+	sudo apt-get install linux-generic-lts-quantal
+	sudo apt-get install linux-generic-lts-trusty
+
+For the new X stack:
+	sudo apt-get install xserver-xorg-lts-quantal
+	
+	
+See Which Groups Your Linux User Belongs To
+	groups
+OR
+	groups username
+	
+	
+	
+UNIX Add Existing User To A Primary Group	
+	 usermod -g groupname username	
+
+(Ubuntu 12.04) If you restsart ubuntu and the system is stuck at Checking battery state message:
+then u probably have problem with lightdm or graphics drivers
+i did following to fix from terminal:(Ctrl+Alt+F1 and login)
+	sudo apt-get install --reinstall lightdm
+	sudo dpkg-reconfigure lightdm
+		select gdm
+	And then reboot.
+
+
+Restarting openvswitch
+ service openvswitch-switch restart
+
+
+
+
+			SSH-ing to vms created in virtual box:
+
+1) create an host only interface in VirtualBox Manager:
+	File> Preferences> network> Host Only Network> Add a new interface (say vboxnet0).
+2) Make sure your VM is shut down. Select your VM and do followings:
+	Right Click/Setting> Network> Adapter2/3> Enable Network Adapter > Attach to: Host-Only Adapter > Name : select the Host only adapter we just created.
+3) Turn on the vm and do ifconfig -a to see all the interfaces. and get an Ip for the interface and bring it up: 
+	sudo dhclient eth1 
+	sudo ifconfig eth1 up
+You will be able to see the Ip of that interface in "ifconfig" now
+
+From your host you can ssh to this IP
+
+
+
+			Sometimes the VM tyou downloaded might not have the ssh program installed init.
+			Solving ssh issues in a virtualbox vm, ubuntu 12.04 server 32 bit
+
+check if u have ssh installed
+	sudo service ssh status
+
+if the service isnt installed u need to install the following
+	sudo apt-get install openssh-server
+	
+If openssh-server installationfails for libwrap0:
+	wget http://mirrors.kernel.org/ubuntu/pool/main/t/tcp-wrappers/libwrap0_7.6.q-21_i386.deb
+	//or get another link by searching for libwrap0
+	
+Installing debian package:
+	sudo dpkg -i package_name.deb
+	
+	
+	
+To change the sudo session timeout in linux to infinite:
+	sudo visudo
+Scroll down and write the following line at the end:
+	Defaults:user_name timestamp_timeout=10
+* Change user_name to your actual user name.  Change 10 (in minutes) to anything you wish. A value of -1 will make it infinite (for a single session).
+
+
+
+
+
+
+To check whether IP Forwarding is enabled or not, you can use this command:
+	sysctl net.ipv4.ip_forward
+
+Enabling IP Forwarding Temporarily 
+	sudo sysctl -w net.ipv4.ip_forward=1
+	
+
+Enabling IP Forwarding Permanently
+	sudo vim /etc/sysctl.conf
+	
+Search and uncomment this line:       net.ipv4.ip_forward = 1
+
+
+
+TCPdump
+To see mac address with tcpdump:
+ tcpdump -e -i eth0 -vvvv
+ 
+ 
+ 
+				IP ROUTE
+IP command to set a default router to 192.168.1.254
+    ip route add default via 192.168.1.254
+ 
+
+Showing the routes:	
+	route -n
+Or,
+	ip route show
+
+Deleting one rule from route
+	ip route flush 10.10.2.0/24
+
+Deleting all the routes
+	ip route flush all
+
+	
+
+Using src in a routing command with route add
+	ip route add default via 205.254.211.254 src 205.254.211.198 table 7
+	
+
+RTNETLINK answers: File exists
+ means you are trying to add a routing rule or routing device that already exists
+
+
+
+
+ifstat is an excellent tool to see all the interfaces of a host in real time.
+
+
+
+#############################################################################################
+##########################################GIT################################################
+#############################################################################################
+
+
+-------------------Commit -a ------------>>|
+----------add--------->>|-------commit--->>|-----------push----------->>|
+                        |                  |                            |
+Workspace              Index      Local Repositiry              Remote Repository
+                        |                  |                            |
+<<--------checkout------|                  |<<--------fetch-------------|
+<<---------------------------------pull---------------------------------|
+<<------checkout HEAD----------------------|
+<<--------diff-------->>|
+<<---------------diff HEAD--------------->>|
+
+
+
+
+
+
+When you want to commit something in your branch, be sure to be in your branch.
+
+
+Add a new remote for your branch :
+$ git remote add [name_of_your_remote] 
+
+Push changes from your commit into your branch :
+$ git push origin [name_of_your_remote]
+
+Update your branch when the original branch from official repository has been updated :
+$ git fetch [name_of_your_remote]
+
+Then you need to apply to merge changes, if your branch is derivated from develop you need to do :
+$ git merge [name_of_your_remote]/develop
+
+
+
+To force the deletion of local branch on your filesystem :
+$ git branch -D [name_of_your_new_branch]
+
+Delete the branch on github :
+$ git push origin :[name_of_your_new_branch]
+
+
+Updating local repository from remote(It will update the branches that is created after you pulled last time):
+$ git fetch
+
+Force checkout a branch
+$ git checkout -f working
+
+
+
+--------------------------
+
+Checking status of a git workspace
+$ git status 
+
+
+
+
+
+
+----------------Creating a new local brunch and pushing that branch to git---------------------
+Create local branch and immediately switching to it (Remember its just a local branch):
+$ git checkout -b Mybranch
+Push the branch on github (This will push the branch working to the remote(github.com) repository) :
+$ git push origin MyBranch
+-------------------------------------
+You can see all branches created by using :
+$ git branch
+
+Which will show (starred one is the  branch you are working on now):
+* MyBranch
+  master
+  master_clean
+----------------------
+
+Deleting git branch. To delete a local branch (local filesystem): 
+$ git branch -d the_local_branch
+To delete a Remote branch: 
+$ git push origin :the_remote_branch
+
+----------------------------
+Switching branch in local machine:
+$ git checkout master   #will switch to branchmaster
+$ git checkout working
+-------------------------------------------
+Say you worked on branch working and want to merge the changes to master branch. THen
+$ git checkout master
+$ git merge working
+This will merge the additions or changes in working branch to the master
+
+Once you have worked on a branch and want to delete it after you meged:
+$ git branch -d the_local_branch
+
+---------
+Everything about branching in git:
+http://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging
+--------------------------
+
+Updating Local repository 
+
+------------------
+
+Virtual Box:
+Listing all the vms:
+	$ VBoxManage list vms
+Listing running Vms:
+	$ VBoxManage list runningvms
+
+Starting a vm
+	$ VBoxManage startvm vm_name
+
+Entering vm:
+
+
+
+
+Vim: 
+yy to copy the line 
+or 
+dd to delete the line
+
+then
+
+p to paste the copied or deleted text after the current line 
+
+
+
+
+To change your bad habit of using nano as 
+modfy ~/.bashrc and include the following
+alias nano=vim
+source ~/.bashrc and you are all set
+
+
+To check the arps known to a machine:
+
+
+
+CONVERTING A text file to printable ps format code page.
+	$ a2ps --line-numbers=1 -o packet.cc ~/Desktop/pgcgit/primogeni/netsim/src/ssfnet/os/packet.cc
+
+you might have to apt-get a2ps before that. (-o is output file, --line numbers specify how often you want the line numebrs in the handout.)
+	
+	
+One VIm shoftcut for navigation:
+	zz makes line under the cursor center window.
+	g; takes you to the most recent change backward.
+	g, takes you to the future changes once you went few steps in the past changes list
+	za to minimize a function or body surrounded by braces (code block)
+	
+	
+Finding out what shell you are using 	
+	ps -p $$
+
+U can launch a different shell by entering that shell, e.g.
+	/bin/bash
+	
+you can change the ownership of a folder or file by:
+	sudo chown username /directiry
+
+
+How to I find and replace every occurrence of a string and replace it in every text file under the /home/www/ directory tree (recursive find/replace).:
+	subdomainA.example.com
+		with 
+	subdomainB.example.com
+
+A:	cd to the directory
+	$ find . -type f -print0 | xargs -0 sed -i 's/subdomainA.example.com/subdomainB.example.com/g'
+
+	$ find . -type f -print0 | xargs -0 sed -i 's/..\/..\/dist/.\/lib/g'               //for replacing ../../dist with ./lib
+
+
+
+
+Routing Table always matches longest prefix. 
+10.1.0.0/24
+10.1.0.0/16 
+In this case first one will be taken
+
+
+Sleep in a shell script or shell
+	Where SUFFIX may be:
+		s for seconds (the default), m for minutes,	h for hours, d for days.
+	To sleep for 5 seconds, use:
+		sleep 5
+
