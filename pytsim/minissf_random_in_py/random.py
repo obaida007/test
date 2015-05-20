@@ -3,7 +3,7 @@ import math
 
 global_seed = 0 
 
-class Random():
+class Random:
 	#Random Variate Generation Class
         """There is no constant definition in python. just dont change the value of the variable
         """
